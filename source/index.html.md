@@ -2,14 +2,14 @@
 title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
+  - php
   - shell
   - ruby
   - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+    - <a href='https://www.paystore.asia'>Documentation Powered by Paystore</a>
 
 includes:
   - errors
@@ -19,15 +19,66 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Paystore API. You can use our api to access Paystore API endpoints which can perform merely fetching and manipulating the data.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Currently we only support PHP language. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+```php
+
+```
+
+```ruby
+
+```
+
+```python
+
+```
+
+```shell
+
+```
+
+```javascript
+
+```
+
 
 # Authentication
 
-> To authorize, use this code:
+## Login 
+
+```php
+  #Request details
+ <?php 
+
+  $retailer_id = 'demo';
+  $retailer_user_id = 'demo123';
+  $password = '12345678';
+  $location = '6.437690,100.445460';
+  $signature_key = md5($retailer_id.$retailer_user_id.$password.$secret_key);
+
+  #Prepare data for POST request
+  $data = array(
+  'rid'=>$retailer_id,
+  'ruid'=>$retailer_user_id,
+  'password'=>$password,
+  'location'=>$location,
+  'signaturekey' => $signature_key
+  );
+
+  #Send the POST request with cURL
+  $ch = curl_init('http://www.paystore.asia/api/retailer/api.php/v1/login/');
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  $response = curl_exec($ch);
+  curl_close($ch);
+
+  #Process your response here
+  echo $response;
+  ?>
+```
 
 ```ruby
 require 'kittn'
@@ -53,187 +104,171 @@ const kittn = require('kittn');
 let api = kittn.authorize('meowmeowmeow');
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+>  The above command returns JSON structured like this: 
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+    "code": 200,
+    "status": true,
+    "message": "Logged in successfully",
+    "data": {
+        "token": "utqMdJMHUn_1539260710"
+    }
+}
 ```
 
-This endpoint retrieves all kittens.
+This endpoint authenticate user and generate token upon sucess.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST http://www.paystore.asia/api/retailer/api.php/v1/login/`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Mandatory | Example | Description
+--------- | ------- | ------- | -----------
+rid | yes | demo | Retailer id
+ruid | yes | demo123 | Retailer user id
+password | yes | 12345678 | password of the retailer user
+location | yes | 6.437690,100.445460 | latitude and longitude of your location
+signaturekey | yes | 9dd664963a537601f44433b561adb76a | unique key generated
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
-## Get a Specific Kitten
+
+# Account Management
+
+## Check credit balance
+
+```php
+
+```
 
 ```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
 ```
 
 ```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+
 ```
 
 ```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
 ```
 
-> The above command returns JSON structured like this:
+>  The above command returns JSON structured like this: 
 
 ```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint retrieves account balance for user.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST http://www.paystore.asia/api/retailer/api.php/v1/creditbalance/`
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parameter | Mandatory | Example | Description
+--------- | ------- | ------- | -----------
+token | yes | utqMdJMHUn_1539260710 | unique token key
 
-## Delete a Specific Kitten
+# Product
+
+## Retreive product list
+
+```php
+
+```
 
 ```ruby
-require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
 ```
 
 ```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
+
 ```
 
 ```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
 ```
 
-> The above command returns JSON structured like this:
+>  The above command returns JSON structured like this: 
 
 ```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
+
 ```
 
-This endpoint deletes a specific kitten.
+This endpoint retrieves account balance for user.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`POST http://www.paystore.asia/api/retailer/api.php/v1/productlist/`
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+Parameter | Mandatory | Example | Description
+--------- | ------- | ------- | -----------
+token | yes | utqMdJMHUn_1539260710 | unique token key
+product | no | DIGI05 | product code
+page | no | 1 | starting number for pagination
+
+
+# Order
+
+## Make An Order 
+
+```php
+
+```
+
+```ruby
+
+```
+
+```python
+
+```
+
+```shell
+
+```
+
+```javascript
+
+```
+
+>  The above command returns JSON structured like this: 
+
+```json
+
+```
+
+This endpoint order physical product.
+
+### HTTP Request
+
+`POST http://www.paystore.asia/api/retailer/api.php/v1/order/`
+
+### Query Parameters
+
+Parameter | Mandatory | Example | Description
+--------- | ------- | ------- | -----------
+token | yes | utqMdJMHUn_1539260710 | unique token key
+product | yes | DIGI05 | product code
+quantity | yes | 1 | number of unit to purchase, If telco reload or bill payment service will be as default value
+name | depend on product | Jacky | It require when some telco reload or bill payment service for validation purpose
+mobilenumber | depend on product | 60126357416 | It require when some telco reload or bill payment service for validation purpose
+
+
+
+
 
